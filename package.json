@@ -1,0 +1,25 @@
+{
+  "name": "ariel-pizza",
+  "version": "1.0.0",
+  "description": "big-data-project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jewgah/ariel-pizza.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jewgah/ariel-pizza/issues"
+  },
+  "homepage": "https://github.com/Jewgah/ariel-pizza#readme",
+  "dependencies": {
+    "standard": "^17.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.4.1"
+  }
+}
