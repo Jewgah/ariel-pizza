@@ -17,22 +17,15 @@ const MenuProps = {
 	},
 };
 
-// const tags = [
-// 	"Wifi 📶  🔴 (1-15 Mb/s)",
-// 	"Wifi 📶  🟠 (15-100 Mb/s)",
-// 	"Wifi 📶  🟢 (100 &+ Mb/s)",
-// 	"Air Conditioning ❄️  ",
-// 	"Cleanliness  🧹",
-// 	"Pleasant  ❤️",
-// 	"Snack 🌮",
-// 	"Coffee ☕",
-// ];
 const tags = [
-	"Open",
-	"Close",
+	"Tomatoes 🍅",
+	"Onions 🧅",
+	"Peppers 🌶️",
+	"Mushroom 🍄",
+	"Peppperoni  🔴",
+	"Tuna 🐟 ",
+
 ];
-
-
 
 function getStyles(name, tagSelected, theme) {
 	return {
@@ -59,8 +52,9 @@ export default function TagList({tagSelected, setTagSelected}) {
 	return (
 		<div>
 			<FormControl sx={{ width: 500 }}>
-				<InputLabel id="demo-multiple-city-label">Action*</InputLabel>
+				<InputLabel id="demo-multiple-city-label">Toppings</InputLabel>
 				<Select
+			     	fullWidth
 					multiple
 					labelId="demo-multiple-city-label"
 					id="demo-multiple-city"
