@@ -1,4 +1,5 @@
-import { Post } from "./post.model.js";
+// import { Post } from "./post.model.js";
+import sendToKafka from "./post.sendToKafka";
 
 export class postController {
     constructor() {
@@ -6,14 +7,14 @@ export class postController {
     async new(req, res) {
         try {
             const {_region, _branch, _topping } = req.body;
-            const post = new Post({
+            sendToKafka.sendMessage(
                 _region, 
                 _branch,
                 _topping
-            })
+            )
             
             try{
-                await post.save();
+                // await post.save();
                  res.status(200).send({ status:200, post: post, message: "success post created" });
             }catch(error){
                  res.status(500).send({

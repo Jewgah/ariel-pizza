@@ -18,6 +18,8 @@ let reactRoute = (req, res, next) => {
 
 // database connection
 const app = express();
+
+// Connection to mongoDB server
 InitiateMongoServer();
 
 app.use(bodyParser.json({limit: "500mb"}));
