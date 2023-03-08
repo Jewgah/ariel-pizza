@@ -1,10 +1,10 @@
-const kafka = require('./post.kafkaConnection');
+import {publish} from "./post.kafkaConnection.js";
 
-function sendMessage(region, branch, topping) {
+export function sendMessage(region, branch, topping) {
 
   const message = region +"/"+ branch + "/" + topping;
-  kafka.publish(message);
+  publish(message);
   console.log("Message was sent successfully.");
 }
 
-export default module.exports = { sendMessage };
+// export default module.exports = { sendMessage };

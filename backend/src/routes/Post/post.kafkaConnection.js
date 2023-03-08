@@ -1,8 +1,10 @@
 // https://www.cloudkarafka.com/ הפעלת קפקא במסגרת ספק זה
 
-const uuid = require("uuid");
-const Kafka = require("node-rdkafka");
+import { v4 as uuidv4 } from 'uuid';
 
+import pkg from 'node-rdkafka';
+// const { Kafka } = pkg;
+ 
 // use you own parameters
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -17,17 +19,27 @@ const kafkaConf = {
 
 const prefix = "aybcvzxf-";
 const topic = `${prefix}new`;
-const producer = new Kafka.Producer(kafkaConf);
+const producer = new pkg.Producer(kafkaConf);
 
 const genMessage = m => new Buffer.alloc(m.length,m);
 
 producer.on("ready", function(arg) {
   console.log(`producer ${arg.name} ready.`); 
 });
+// producer.on('event.error', err => {
+//   console.error('Error in Kafka producer', err);
+//   reject(err);
+// });
+
 producer.connect();
 
-module.exports.publish= function(msg)
-{   
-  m=JSON.stringify(msg);
-  producer.produce(topic, -1, genMessage(m), uuid.v4());     
+export async function publish(msg){
+  try {
+    await connectProducer();
+    m=JSON.stringify(msg);
+    producer.produce(topic, -1, genMessage(m), uuid.v4());
+    console.log(`Produced message: ${msg}`);
+  } catch (err) {
+    console.error('Error producing message', err);
+  }     
 }

@@ -1,5 +1,5 @@
 // import { Post } from "./post.model.js";
-import sendToKafka from "./post.sendToKafka";
+// import sendToKafka from "./post.sendToKafka.js";
 
 export class postController {
     constructor() {
@@ -7,7 +7,7 @@ export class postController {
     async new(req, res) {
         try {
             const {_region, _branch, _topping } = req.body;
-            sendToKafka.sendMessage(
+            sendMessage(
                 _region, 
                 _branch,
                 _topping
