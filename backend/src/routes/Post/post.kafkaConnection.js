@@ -35,7 +35,6 @@ producer.connect();
 
 export async function publish(msg){
   try {
-    await connectProducer();
     m=JSON.stringify(msg);
     producer.produce(topic, -1, genMessage(m), uuid.v4());
     console.log(`Produced message: ${msg}`);

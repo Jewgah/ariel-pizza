@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
+// Set the 'strictQuery' option to 'false' globally for Mongoose
+mongoose.set('strictQuery', false);
 
 let postSchema = new mongoose.Schema({
-  _region: { type: String, required: false },
-  _branch: { type: String, required: false },
+  _region: { type: String, required: true },
+  _branch: { type: String, required: true },
   _topping: {type: Array, required: true },
   _createdAt: { type: Date, default: Date.now },
   _ttl: {

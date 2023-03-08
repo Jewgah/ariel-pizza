@@ -1,5 +1,5 @@
 // import { Post } from "./post.model.js";
-// import sendToKafka from "./post.sendToKafka.js";
+import { sendMessage } from './post.sendToKafka.js';
 
 export class postController {
     constructor() {
