@@ -7,7 +7,7 @@ export function sendMessage(region, branch, topping) {
     branch,
     topping,
   };
-  console.log(topping)
+  console.log(topping);
   publish(message);
   console.log("Message was sent successfully.");
 }

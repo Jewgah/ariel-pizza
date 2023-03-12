@@ -24,7 +24,7 @@ const producer = new pkg.Producer(kafkaConf);
 
 const genMessage = m => new Buffer.alloc(m.length,m);
 //const prefix = process.env.CLOUDKARAFKA_USERNAME;
-
+console.log("calling for the consumer");
 console.log(genMessage);
 console.log(producer)
 
