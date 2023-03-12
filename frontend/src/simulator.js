@@ -1,7 +1,10 @@
+
+// import PostService from "../src/Api/Controllers/PostService";
 const regions = ["North", "Haifa", "Center", "Dan", "South"];
 const toppings = ["Tomato", "Mushroom", "Tuna", "Onion", "Pepperoni", "Black Olives", "Green Olives","Pineapple", "Corn", "Extra Cheese"];
 const orderStatus = ["in progress", "completed"];
 const maxNumToppings = 4;
+
 
 const generateOrderId = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -35,6 +38,29 @@ const generateOrderId = () => {
   };
 };
 
+function generateOrders(region, branch, numOrders) {
+  const toppings = [
+    "Tomatoes 🍅",
+    "Onions 🧅",
+    "Peppers 🌶️",
+    "Mushroom 🍄",
+    "Peppperoni  🔴",
+    "Tuna 🐟 "
+  ];
+
+  for (let i = 0; i < numOrders; i++) {
+    const order = {
+			_region: region,
+			_branch: branch,
+			_topping: [toppings[Math.floor(Math.random() * toppings.length)], toppings[Math.floor(Math.random() * toppings.length)]],
+		};
+
+    // PostService.createNewPost(order);
+  }
+
+}
+
+
 const generateData = (numOrders, branchId) => {
 
 
@@ -46,4 +72,4 @@ const generateData = (numOrders, branchId) => {
     return orders;
   };
 
-module.exports = { generateData };
+module.exports = { generateData ,generateOrders};
