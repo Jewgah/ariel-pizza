@@ -3,7 +3,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
-//const send_to = require('./send_to_mongo');
+import { Post } from "./post.model.js";
+import { sendToMongo } from './post.sendToMongo.js';
+
 
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -41,8 +43,18 @@ consumer.on("ready", function(arg) {
 });
 
 consumer.on("data", function(m) {
- console.log(m.value.toString());
- //send_to.sendToMongo({ message: m.value.toString() });
+  
+  const message = JSON.parse((m.value.toString()));
+  console.log(message)
+  const post = new Post({
+    _region: message.region,
+    _branch: message.branch,
+    _topping: message.topping
+  });
+  // post.save();
+  sendToMongo(post)
+    console.log("sent to mongo");
+  
 });
 consumer.on("disconnected", function(arg) {
   process.exit();

@@ -7,6 +7,7 @@ export class postController {
     async new(req, res) {
         try {
             const {_region, _branch, _topping } = req.body;
+            console.log("topping: " + _topping)
             sendMessage(
                 _region, 
                 _branch,
