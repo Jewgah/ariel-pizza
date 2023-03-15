@@ -99,12 +99,12 @@ export default function Generate() {
 
     function generateOrders(region, branch, numOrders) {
         const toppings = [
-          "Tomatoes 🍅",
-          "Onions 🧅",
-          "Peppers 🌶️",
-          "Mushroom 🍄",
-          "Peppperoni  🔴",
-          "Tuna 🐟 "
+          "Tomatoes",
+          "Onions",
+          "Peppers",
+          "Mushroom",
+          "Peppperoni",
+          "Tuna"
         ];
         
       

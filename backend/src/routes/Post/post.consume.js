@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
 import { sendToMongo } from './post.sendToMongo.js';
-
+//import pub from './post.redispub.js';
 
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -49,10 +49,13 @@ consumer.on("data", function(m) {
   const post = new Post({
     _region: message.region,
     _branch: message.branch,
-    _topping: message.topping
+    _topping: message.topping,
+    _createdAt: message.createdAt,
+    _ttl : message.ttl
   });
-  // post.save();
+  //post.save();
   sendToMongo(post)
+  //pub.pub(post)
     console.log("sent to mongo");
   
 });

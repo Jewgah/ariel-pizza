@@ -14,7 +14,7 @@ client.connect((err) => {
 
 export function sendToMongo(message) {
   const db = client.db('Cluster0');
-  const collection = db.collection('messages');
+  const collection = db.collection('sniri2');
 
   
   //doc._id = new ObjectId();

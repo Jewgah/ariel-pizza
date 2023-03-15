@@ -1,23 +1,20 @@
-// import { Post } from "./post.model.js";
-import { sendMessage } from './post.sendToKafka.js';
+import { Branch } from "./branch.model.js";
 
-export class postController {
+export class branchController {
     constructor() {
     }
-    async new(req, res) {
+    async newbranch(req, res) {
         try {
-            
-            const {_region, _branch, _topping} = req.body;
-            console.log("_branch: " + _branch);
-            sendMessage(
+            const {_region, _branch, _action } = req.body;
+            const branch = new Branch({
                 _region, 
                 _branch,
-                _topping,
-            );
+                _action
+            })
             
             try{
-                // await post.save();
-                 res.status(200).send({ status:200, post: post, message: "success post created" });
+                await branch.save();
+                 res.status(200).send({ status:200, branch: branch, message: "success post created" });
             }catch(error){
                  res.status(500).send({
                     status: 500,
