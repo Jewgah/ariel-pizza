@@ -17,9 +17,6 @@ import { useState, useEffect } from "react";
 import MenuItem from '@mui/material/MenuItem';
 import PostService from "../Api/Controllers/PostService";
 
-const { generateData } = require('../simulator');
-
-
 const theme = createTheme({
 	palette: {
 	  primary: {
@@ -120,8 +117,6 @@ export default function Ads() {
 		setData(dataToForm);
 		PostService.createNewPost(dataToForm);
 		setShowAlert(true);
-
-	// generateData(dataToForm.pizzanumber,dataToForm.branch);
 	};
 
 	useEffect(() => {

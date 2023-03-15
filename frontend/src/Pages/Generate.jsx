@@ -17,9 +17,6 @@ import { useState, useEffect } from "react";
 import MenuItem from '@mui/material/MenuItem';
 import PostService from "../Api/Controllers/PostService";
 
-// const { generateData, generateOrders } = require('../simulator');
-
-
 const theme = createTheme({
 	palette: {
 	  primary: {
