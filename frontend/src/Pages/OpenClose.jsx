@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import TagList from "../Components/TagList";
 import { Controller, useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MenuItem from '@mui/material/MenuItem';
 import BranchService from "../Api/Controllers/BranchService";
 
@@ -105,6 +105,7 @@ export default function OpenClose() {
 	const [region, setRegions] = React.useState('North');
 	const [branch, setBranch] = React.useState('');
 	const [action, setAction] = React.useState('');
+	const [showAlert, setShowAlert] = useState(false);
 
  
 	const handleChangeRegion = (event) => {
@@ -127,10 +128,17 @@ export default function OpenClose() {
 			_action: action, 
 		};
 		setData(dataToForm);
-		BranchService.actionBranch(dataToForm)
+		BranchService.actionBranch(dataToForm);
+		setShowAlert(true);
 
 	};
 
+	useEffect(() => {
+		if (showAlert) {
+		  window.alert("Action successful");
+		  setShowAlert(false);
+		}
+	  }, [showAlert]);
 
 	return (
 		<ThemeProvider theme={theme}>

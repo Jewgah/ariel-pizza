@@ -13,7 +13,7 @@ import Container from "@mui/material/Container";
 import TagList from "../Components/TagList";
 import { Controller, useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MenuItem from '@mui/material/MenuItem';
 import PostService from "../Api/Controllers/PostService";
 
@@ -96,6 +96,7 @@ export default function Generate() {
 	const [region, setRegions] = React.useState('North');
 	const [branch, setBranch] = React.useState('');
 	const [number, setNumber] = React.useState('');
+	const [showAlert, setShowAlert] = useState(false);
 
     function generateOrders(region, branch, numOrders) {
         const toppings = [
@@ -140,9 +141,15 @@ export default function Generate() {
 			number: number,
 		};
 	generateOrders(dataToForm._region,dataToForm._branch,dataToForm.number);
+	setShowAlert(true);
 	};
 
-
+	useEffect(() => {
+		if (showAlert) {
+		  window.alert("Orders successfully generated");
+		  setShowAlert(false);
+		}
+	  }, [showAlert]);
 
 
 	return (
