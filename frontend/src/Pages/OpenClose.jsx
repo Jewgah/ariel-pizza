@@ -6,30 +6,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import PizzaIcon from "@mui/icons-material/LocalPizzaOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import TagList from "./TagList";
+import TagList from "../Components/TagList";
 import { Controller, useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import MenuItem from '@mui/material/MenuItem';
+import BranchService from "../Api/Controllers/BranchService";
 
-const { generateData } = require('./simulator');
-
-
-const actions = [
-	{
-	  value: 'Open',
-	  label: 'open',
-	},
-	{
-	  value: 'Close',
-	  label: 'close',
-	},
-
-  ];
 
 
 const theme = createTheme({
@@ -51,12 +37,6 @@ const theme = createTheme({
 
 export default function OpenClose() {
 
-
-	
-	const [action, setActions] = React.useState('Open');
-	const handleChange = (event) => {
-		setActions(event.target.value);
-	  };
 	
 	const {
 		register,
@@ -65,11 +45,46 @@ export default function OpenClose() {
 		formState: { errors },
 	} = useForm();
 
+	const regions = [
+		{
+			value: 'North',
+			label: 'North',
+		  },
+		  {
+			value: 'Haifa',
+			label: 'Haifa',
+		  }, 
+		  {
+			value: 'Central',
+			label: 'Central',
+		  },
+		  {
+			value: 'Dan',
+			label: 'Dan',
+		  },
+		  {
+			value: 'South',
+			label: 'South',
+		  },
+	
+	  ]; 
+	  const actions = [
+		{
+			value: 'open',
+			label: 'Open',
+		  },
+		  {
+			value: 'close',
+			label: 'Close',
+		  },
+	
+	  ]; 
 	const styles = {
 		paperContainer: {
 			backgroundSize: "cover",
 			backgroundImage: `url(${"https://zupimages.net/up/23/06/e1qp.jpg"})`,
 			minHeight: 1000,
+
 		},
 		formContainer: {
 			padding: "40px",
@@ -78,37 +93,49 @@ export default function OpenClose() {
 
 	const style_form = {
 		paperContainer: {
-			borderRadius: "45px",
+			borderRadius: "25px",
 			boxShadow: "5px 5px 9px 3px rgba(0,0,0,0.78)",
 			backgroundColor: "white",
 			paddingBottom: 40,
-			maxWidth: 650,
+			maxWidth: 550,
 		},
 	};
 
-	const [selectedFiles, setSelectedFiles] = useState([]);
-	const [tagSelected, setTagSelected] = useState([]);
 	const [data, setData] = React.useState("");
+	const [region, setRegions] = React.useState('North');
+	const [branch, setBranch] = React.useState('');
+	const [action, setAction] = React.useState('');
 
-	// let navigate = useNavigate();
+ 
+	const handleChangeRegion = (event) => {
+		setRegions(event.target.value);
+	  };
 
-	// const handleSubmitForm = (current) => {
-	// 	generateData(current);
-	// };
+	  const handleChangeBranch = (event) => {
+		setBranch(event.target.value);
+	  };
+	  const handleChangeAction = (event) => {
+		setAction(event.target.value);
+	  };
 
-	handleSubmit((data) => {
-		const branch = data.branch;
-		const pizzanumber = data.pizzanumber;
-		generateData(branch, pizzanumber);
-	  })
-	  
+
+	
+	  const handleSubmitForm = (current) => {
+		const dataToForm = {
+			_region: region,
+			_branch: branch,
+			_action: action, 
+		};
+		setData(dataToForm);
+		BranchService.actionBranch(dataToForm)
+
+	};
 
 
 	return (
 		<ThemeProvider theme={theme}>
 			
 		<div style={styles.paperContainer}>
-		
 			<div style={styles.formContainer}>
 				<Container
 					component="main"
@@ -118,7 +145,7 @@ export default function OpenClose() {
 					<CssBaseline />
 					<Box
 						sx={{
-							marginTop: 19,
+							marginTop: 17,
 							display: "flex",
 							flexDirection: "column",
 							alignItems: "center",
@@ -137,47 +164,77 @@ export default function OpenClose() {
 							<CloseIcon sx={{ width: 40, height: 40, m: 1 }} />
 						</Avatar>
 						<Typography component="h1" variant="h5">
-						OPEN OR CLOSE BRANCH
+						ACTIONS BRANCH
 						</Typography>
 						<Box
 							component="form"
-							// onSubmit={handleSubmit((data) =>
-							// 	handleSubmitForm(data)
-							// )}
+							onSubmit={handleSubmit((data) =>
+								handleSubmitForm(data)
+							)}
 							sx={{ mt: 3 }}
 						>
 							<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									required
+									id="region"
+									name="region"
+									type="String"
+									label="region"
+									select
+									fullWidth
+									error={errors?.title ? true : false}
+									helperText={errors?.title?.message}
+									value={region}
+									onChange={handleChangeRegion}
+									
+									>
+									{regions.map((option) => (
+										<MenuItem key={option.value} value={option.value}>
+										{option.label}
+										</MenuItem>
+									))}
+									</TextField>
+								</Grid>
 								<Grid item xs={12}>
 									<TextField
 										required
 										fullWidth
 										id="branch"
-										label="Branch"
+										label="branch"
 										name="branch"
-										type="tel"
-										autoComplete="Name of Branch:"
-										{...register("Name of Branch:", {
+										type="String"
+									
+										autoComplete="branch:"
+										{...register("branch:", {
 											required: true,
 											pattern: {
-												message: "Name of Branch:",
+												message: "branch:",
 												
 
 											},
 										})}
-										error={errors?.title ? true : false}
-										helperText={errors?.title?.message}
+									error={errors?.title ? true : false}
+									helperText={errors?.title?.message}
+									value={branch}
+									onChange={handleChangeBranch}
 									/>
 								</Grid>
-
+						
 								<Grid item xs={12}>
 								<TextField
-									id="outlined-select-action"
+									required
+									id="action"
+									name="action"
+									type="String"
+									label="action"
 									select
 									fullWidth
-									label="Select"
+									error={errors?.title ? true : false}
+									helperText={errors?.title?.message}
 									value={action}
-									onChange={handleChange}
-									helperText="Please select your action"
+									onChange={handleChangeAction}
+									
 									>
 									{actions.map((option) => (
 										<MenuItem key={option.value} value={option.value}>
@@ -186,9 +243,7 @@ export default function OpenClose() {
 									))}
 									</TextField>
 								</Grid>
-
 							</Grid>
-
 							<Button
 								fullWidth
 								type="submit"
@@ -196,7 +251,7 @@ export default function OpenClose() {
 								color="secondary"
 								sx={{ mt: 3, mb: 6 }}
 							>
-							Submit 
+								 Order Now
 							</Button>
 						</Box>
 					</Box>

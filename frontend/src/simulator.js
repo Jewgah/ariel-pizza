@@ -40,12 +40,12 @@ const generateOrderId = () => {
 
 function generateOrders(region, branch, numOrders) {
   const toppings = [
-    "Tomatoes 🍅",
-    "Onions 🧅",
-    "Peppers 🌶️",
-    "Mushroom 🍄",
-    "Peppperoni  🔴",
-    "Tuna 🐟 "
+    "Tomatoes",
+    "Onions",
+    "Peppers",
+    "Mushroom",
+    "Peppperoni",
+    "Tuna"
   ];
 
   for (let i = 0; i < numOrders; i++) {

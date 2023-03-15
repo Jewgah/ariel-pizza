@@ -93,7 +93,6 @@ export default function Ads() {
 	};
 
 	const [data, setData] = React.useState("");
-
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [tagSelected, setTagSelected] = useState([]);
 	const [region, setRegions] = React.useState('North');

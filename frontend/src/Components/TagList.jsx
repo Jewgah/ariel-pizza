@@ -18,12 +18,12 @@ const MenuProps = {
 };
 
 const tags = [
-	"Tomatoes 🍅",
-	"Onions 🧅",
-	"Peppers 🌶️",
-	"Mushroom 🍄",
-	"Peppperoni  🔴",
-	"Tuna 🐟 ",
+	"Tomatoes",
+	"Onions",
+	"Peppers",
+	"Mushroom",
+	"Peppperoni",
+	"Tuna",
 
 ];
 
