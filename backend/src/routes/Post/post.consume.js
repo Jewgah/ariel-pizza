@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-import { send_to_radis } from './publishradis.js';
+import { send_to_redis,clean_redis_database } from './publishradis.js';
+import { RedisDataOrder } from './post.RedisDataOrder.js';
 
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -45,6 +46,14 @@ consumer.on("data", async function(m) {
   
   const message = JSON.parse((m.value.toString()));
   console.log(message)
+
+  const postRedis = {
+    _region: message.region,
+    _branch: message.branch,
+    _topping: message.topping,
+    _createdAt: message.createdAt,
+    _ttl : message.ttl
+  }
   const post = new Post({
     _region: message.region,
     _branch: message.branch,
@@ -53,8 +62,10 @@ consumer.on("data", async function(m) {
     _ttl : message.ttl
   });
 
-  post.save();
-  send_to_radis(post)
+  //post.save(); // send to mongoDB
+  const data = new RedisDataOrder(postRedis);
+  send_to_redis(data)
+  //clean_redis_database();
   console.log("sent to mongo");
   
 });

@@ -101,7 +101,7 @@ export default function Generate() {
           "Onions",
           "Peppers",
           "Mushroom",
-          "Peppperoni",
+          "Pepperoni",
           "Tuna"
         ];
         

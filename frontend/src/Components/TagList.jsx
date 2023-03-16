@@ -22,7 +22,7 @@ const tags = [
 	"Onions",
 	"Peppers",
 	"Mushroom",
-	"Peppperoni",
+	"Pepperoni",
 	"Tuna",
 
 ];
