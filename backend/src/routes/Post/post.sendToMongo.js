@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId  } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 const uri = "mongodb+srv://ormendel:1234@cluster0.czuhh3m.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
