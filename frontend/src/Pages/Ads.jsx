@@ -13,12 +13,9 @@ import Container from "@mui/material/Container";
 import TagList from "../Components/TagList";
 import { Controller, useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MenuItem from '@mui/material/MenuItem';
 import PostService from "../Api/Controllers/PostService";
-
-const { generateData } = require('../simulator');
-
 
 const theme = createTheme({
 	palette: {
@@ -97,6 +94,8 @@ export default function Ads() {
 	const [tagSelected, setTagSelected] = useState([]);
 	const [region, setRegions] = React.useState('North');
 	const [branch, setBranch] = React.useState('');
+	const [showAlert, setShowAlert] = useState(false);
+
 
 
 	const handleChangeRegion = (event) => {
@@ -116,12 +115,17 @@ export default function Ads() {
 			_topping: tagSelected,
 		};
 		setData(dataToForm);
-		PostService.createNewPost(dataToForm)
-
-	// generateData(dataToForm.pizzanumber,dataToForm.branch);
+		PostService.createNewPost(dataToForm);
+		setShowAlert(true);
 	};
 
-
+	useEffect(() => {
+		if (showAlert) {
+		  window.alert("Order successfully generated");
+		  setShowAlert(false);
+		}
+	  }, [showAlert]);
+	
 	return (
 		<ThemeProvider theme={theme}>
 			
