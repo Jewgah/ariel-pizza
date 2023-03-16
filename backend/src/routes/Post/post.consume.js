@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-//import { sendToMongo } from './post.sendToMongo.js';
 import { send_to_radis } from './publishradis.js';
 
 const kafkaConf = {
@@ -55,7 +54,6 @@ consumer.on("data", async function(m) {
   });
 
   post.save();
-  //sendToMongo(post)
   send_to_radis(post)
   console.log("sent to mongo");
   
