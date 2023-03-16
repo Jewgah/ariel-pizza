@@ -1,6 +1,16 @@
 import {publish} from "./post.publish.js";
+
+function ttlFunction() {
+  const now = new Date();
+  const randMinutes = Math.floor(Math.random() * 160);
+  const randMillis = randMinutes * 60 * 1000;
+  const futureTime = now.getTime() + randMillis;
+  return new Date(futureTime);
+
+}
+
 export function sendMessage(region, branch, topping) {
-  
+
   const message = {
     region,
     branch,

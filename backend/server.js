@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import { InitiateMongoServer } from "./src/config/db.js";
+//import { InitiateMongoServer } from "./src/config/db.js";
 import { postRoute } from "../backend/src/routes/Post/post.routes.js";
 import { branchRoute } from "../backend/src/routes/Post/branch.routes.js";
 import dotenv from 'dotenv'
@@ -21,7 +21,7 @@ let reactRoute = (req, res, next) => {
 const app = express();
 
 // Connection to mongoDB server
-InitiateMongoServer();
+// InitiateMongoServer();
 
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({limit: "500mb", extended: true, parameterLimit:5000000}));

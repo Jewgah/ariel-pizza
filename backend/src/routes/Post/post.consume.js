@@ -4,8 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-import { sendToMongo } from './post.sendToMongo.js';
-//import pub from './post.redispub.js';
+import { send_to_radis } from './publishradis.js';
 
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -42,7 +41,7 @@ consumer.on("ready", function(arg) {
   consumer.consume();
 });
 
-consumer.on("data", function(m) {
+consumer.on("data", async function(m) {
   
   const message = JSON.parse((m.value.toString()));
   console.log(message)
@@ -53,10 +52,10 @@ consumer.on("data", function(m) {
     _createdAt: message.createdAt,
     _ttl : message.ttl
   });
-  //post.save();
-  sendToMongo(post)
-  //pub.pub(post)
-    console.log("sent to mongo");
+
+  post.save();
+  send_to_radis(post)
+  console.log("sent to mongo");
   
 });
 consumer.on("disconnected", function(arg) {
