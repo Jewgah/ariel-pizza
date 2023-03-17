@@ -29,4 +29,20 @@ export class branchController {
         }
     }
 
+    // async getAllOpenBranchesByRegion(req, res) {
+    //     const region = req.params.region;
+      
+    //     try {
+    //       const branches = await Branch.distinct('_branch', {
+    //         _region: region,
+    //         _action: 'open'
+    //       }).sort();
+      
+    //       res.send(branches);
+    //     } catch (error) {
+    //       console.log(error);
+    //       res.status(500).send({ status: 500, message: 'Internal Server Error' });
+    //     }
+    //   }
+
 }

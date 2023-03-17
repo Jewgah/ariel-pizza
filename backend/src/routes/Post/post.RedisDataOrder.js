@@ -13,6 +13,8 @@ export class RedisDataOrder
         this.mushroom = false,
         this.pepperoni = false,
         this.tuna = false,
+        this.createdAt = orders._createdAt,
+        this.ttl = orders._ttl,
         // this.ttl,
         // this.createdAt,
         

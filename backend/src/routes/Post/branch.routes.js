@@ -12,6 +12,7 @@ export class branchRoute {
 }
 
     initializeRoutes() {        
+      //newbranch  
       this.router.post("/newbranch",[
      
         check("_region", "Please enter a region").notEmpty(),
@@ -20,6 +21,10 @@ export class branchRoute {
       
       ],(req,res)=>this.controller.newbranch(req,res));  
 
+      // //branchesbyregion
+      // this.router.post("/branchesbyregion",[
+      //   check("_region", "Please select a region").notEmpty(),
+      // ],(req,res)=>this.controller.getAllOpenBranchesByRegion(req,res));  
     }
   
   }

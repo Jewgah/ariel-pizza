@@ -106,29 +106,79 @@ export function send_to_redis(orders) {
   getValueFromRedis('peppersCount');
   getValueFromRedis('onionsCount');
 
+  const expirationTime = orders.createdAt - orders.ttl;
+  addOrder(orders.createdAt ,expirationTime);
+  updateOrderCount();
+  deleteExpiredOrders();
 
+  getValueFromRedis('openOrdersCount');
 
 }
 
-// export function send_to_radis(message){
-//     client.set(generateUniqueId(), message, (error, result) => {
-//         if (error) {
-//           console.error(error);
-//         } else {
-//           console.log(`Data published to Redis: ${result}`);
-//           console.log(`Data published to Redis1: ${message}`);
-//           getAllKeysFromRedis();
-//         }
-//       });
-      
-// }
+//################################
 
+const ORDER_LIST_KEY = 'openOrders';
+const ORDER_COUNT_KEY = 'openOrdersCount';
+
+// Add an order to the list and set its expiration time
+function addOrder(order, expirationTime) {
+  // Convert the order object to a string to store in Redis
+  const orderString = JSON.stringify(order);
+
+  client.lpush(ORDER_LIST_KEY, orderString, (err, result) => {
+    if (err) {
+      console.error('Failed to add order to Redis:', err);
+    } else {
+      console.log(`Added order to Redis list. Result: ${result}`);
+
+      // Set the expiration time for the order
+      client.expire(ORDER_LIST_KEY, expirationTime, (err, result) => {
+        if (err) {
+          console.error('Failed to set order expiration time:', err);
+        } else {
+          console.log(`Set expiration time for order: ${expirationTime}`);
+        }
+      });
+    }
+  });
+}
+
+// Get the number of orders in the list and update the count variable
+function updateOrderCount() {
+  client.llen(ORDER_LIST_KEY, (err, result) => {
+    if (err) {
+      console.error('Failed to get order count from Redis:', err);
+    } else {
+      console.log(`Order count: ${result}`);
+
+      // Update the order count variable in Redis
+      client.set(ORDER_COUNT_KEY, result, (err, result) => {
+        if (err) {
+          console.error('Failed to update order count in Redis:', err);
+        } else {
+          console.log(`Updated order count in Redis to ${result}`);
+        }
+      });
+    }
+  });
+}
+
+// Delete all expired orders from the list
+function deleteExpiredOrders() {
+  client.lrem(ORDER_LIST_KEY, 0, '', (err, result) => {
+    if (err) {
+      console.error('Failed to delete expired orders from Redis:', err);
+    } else {
+      console.log(`Deleted ${result} expired orders from Redis`);
+    }
+  });
+}
+
+
+//################################
 
 
 // module.exports = { send_to_radis };
-
-
-
 // client.quit();
 
 
