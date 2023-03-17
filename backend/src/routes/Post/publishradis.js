@@ -106,7 +106,9 @@ export function send_to_redis(orders) {
   getValueFromRedis('peppersCount');
   getValueFromRedis('onionsCount');
 
-  const expirationTime = orders.createdAt - orders.ttl;
+  const createdAtDate = new Date(orders.createdAt)
+  const ttlDate = new Date(orders.ttl)
+  const expirationTime = Math.floor((ttlDate - createdAtDate)/100000);
   addOrder(orders.createdAt ,expirationTime);
   updateOrderCount();
   deleteExpiredOrders();
