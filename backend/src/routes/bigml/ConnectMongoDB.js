@@ -36,7 +36,7 @@ async function insertToMongo(msg){
 };
 
 // For BigML we need to convert the data in mongo to csv
-async function mongoToCsv(){
+export async function mongoToCsv(){
     await client.connect();
      
     await collection.find({}).toArray((err, data) => {
@@ -50,4 +50,4 @@ async function mongoToCsv(){
 };
 
 
-module.exports = {MongoClient, insertToMongo ,mongoToCsv};
+//module.exports = {MongoClient, insertToMongo ,mongoToCsv};

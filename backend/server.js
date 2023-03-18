@@ -34,6 +34,7 @@ app.use(cors());
 app.use("/api/post", new postRoute().router);
 app.use("/api/branch", new branchRoute().router);
 
+
 app.use(express.static('public'));
 
 app.get("/*", reactRoute)

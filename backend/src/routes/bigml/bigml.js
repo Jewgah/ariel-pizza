@@ -1,8 +1,8 @@
 //Import MongoDB connection
-import {mongo_connection} from "./ConnectMongoDB.js"
+import {mongoToCsv} from "./ConnectMongoDB.js"
 
 //Import BigML connection
-import {bigml} from "bigml";
+import bigml from "bigml";
 
 const connection = new bigml.BigML('ORIMENDEL','1f3caca0bf1faeb3df5a68cba36e455396e7242e'); //my API
 const source = new bigml.Source(connection);
@@ -10,8 +10,8 @@ let modelInfo = {}; //for prediction function
 
 
 //here we create a new model when the user press the button Build Model
-async function buildModel(){
-    await mongo_connection.mongoToCsv();
+export async function buildModel(){
+    await mongoToCsv();
     var source = new bigml.Source(connection);
     source.create('./arielpizza_orders.csv', function (error, sourceInfo) {
         if (!error && sourceInfo) {
@@ -38,7 +38,7 @@ async function buildModel(){
 }
 
 //predict function in bigml (dashboard)
-function predict(arr){
+export function predict(arr){
     
     // if(modelInfo = {}){
     //     var str = "No Model available now! Please click \"Build Model\"";
@@ -71,4 +71,4 @@ function predict(arr){
 };
 
 // buildModel();
-module.exports = {buildModel ,predict};
+//module.exports = {buildModel ,predict};
