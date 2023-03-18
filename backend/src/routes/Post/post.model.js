@@ -10,7 +10,7 @@ let postSchema = new mongoose.Schema({
 });
 
 
-export const Post = mongoose.model('orders1', postSchema);
+export const Post = mongoose.model('orders', postSchema);
 
 InitiateMongoServer();
 

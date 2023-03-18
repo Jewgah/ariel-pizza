@@ -47,7 +47,7 @@ export function clean_redis_database() {
   client.flushdb(function (err, succeeded) {
     if (err) throw err;
 
-    //console.log(`Redis database cleaned: ${succeeded}`);
+    console.log(`Redis database cleaned: ${succeeded}`);
   });
 }
 
@@ -84,7 +84,7 @@ console.log('sending data to Redis');
 
   const createdAtDate = new Date(orders.createdAt)
   const ttlDate = new Date(orders.ttl)
-  const expirationTime = Math.floor((ttlDate - createdAtDate)/1000);
+  const expirationTime = Math.floor((ttlDate - createdAtDate)/5000);
   addOrder(orders.createdAt ,expirationTime);
   updateOrderCount();
   deleteExpiredOrders();
@@ -111,6 +111,7 @@ function addOrder(order, expirationTime) {
       if (err) throw err;
       let newAvgOrderTime = ((totalOrdersCount - 1) * currentAvgOrderTime + expirationTime) / totalOrdersCount;
       newAvgOrderTime = Math.floor(newAvgOrderTime / 60); // Convert to minutes and round down
+      console.log(`TotalOrdersCount = ${totalOrdersCount} and newAvgOrderTime = ${newAvgOrderTime} seconds`)
       client.set('averageOrderTime', newAvgOrderTime, (err, result) => {
         if (err) throw err;
         console.log(`New order added. Total orders: ${totalOrdersCount}, new average order time: ${newAvgOrderTime} minutes`);
@@ -129,7 +130,8 @@ function addOrder(order, expirationTime) {
         if (err) {
           console.error('Failed to set order expiration time:', err);
         } else {
-          console.log(`Set expiration time for order: ${expirationTime}`);
+          const expirationTimerTimeInMins = Math.floor(expirationTime / 60); // Convert to minutes and round down
+          console.log(`Set expiration time for order: ${expirationTimerTimeInMins} minutes`);
         }
       });
     }

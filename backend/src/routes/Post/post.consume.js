@@ -62,7 +62,7 @@ consumer.on("data", async function(m) {
     _ttl : message.ttl
   });
 
-  //post.save(); // send to mongoDB
+  post.save(); // send to mongoDB
   const data = new RedisDataOrder(postRedis);
   send_to_redis(data)
   //clean_redis_database();

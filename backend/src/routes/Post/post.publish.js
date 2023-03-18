@@ -31,10 +31,6 @@ const genMessage = m => new Buffer.alloc(m.length,m);
 producer.on("ready", function(arg) {
   console.log(`producer ${arg.name} ready.`); 
 });
-// producer.on('event.error', err => {
-//   console.error('Error in Kafka producer', err);
-//   reject(err);
-// });
 
 producer.connect();
 
