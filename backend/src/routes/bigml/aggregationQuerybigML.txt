@@ -1,0 +1,27 @@
+[
+  {
+    "$group": {
+      "_id": "$_id",
+      "_createdAt": {"$first": "$_createdAt"},
+      "_ttl": {"$first": "$_ttl"},
+      "_branch": {"$first": "$_branch"},
+      "_region": {"$first": "$_region"},
+      "toppings": {"$addToSet": "$_topping"}
+    }
+  },
+  {
+    "$project": {
+      "_id": 1,
+      "_createdAt": 1,
+      "_ttl": 1,
+      "_branch": 1,
+      "_region": 1,
+      "toppings": 1
+    }
+  },
+  {
+    "$sort": {
+      "_createdAt": 1
+    }
+  }
+]

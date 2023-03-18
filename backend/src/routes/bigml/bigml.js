@@ -1,21 +1,19 @@
 //Import MongoDB connection
-// const mongo = require("./ConnectMongoDB");
-import {mongo_connection} from "../Post/post.sendToMongo"
+import {mongo_connection} from "./ConnectMongoDB.js"
 
 //Import BigML connection
 import {bigml} from "bigml";
 
-const { cache } = require("ejs");
-const connection = new bigml.BigML('hezzi1','6da0d77cf471b455b1893ed468db03ec0d49119d'); //my API
+const connection = new bigml.BigML('ORIMENDEL','1f3caca0bf1faeb3df5a68cba36e455396e7242e'); //my API
 const source = new bigml.Source(connection);
-let modelInfo = {};
+let modelInfo = {}; //for prediction function
 
 
 //here we create a new model when the user press the button Build Model
 async function buildModel(){
-    await mongo.mongoToCsv();
+    await mongo_connection.mongoToCsv();
     var source = new bigml.Source(connection);
-    source.create('./flightData.csv', function (error, sourceInfo) {
+    source.create('./arielpizza_orders.csv', function (error, sourceInfo) {
         if (!error && sourceInfo) {
             var dataset = new bigml.Dataset(connection);
             dataset.create(sourceInfo, function (error, datasetInfo) {
@@ -23,7 +21,7 @@ async function buildModel(){
                     var model = new bigml.Model(connection);
                     model.create(datasetInfo, function (error, model) {
                         if (!error && model) {
-                            console.log("Model built successfully with code: " + model.code);
+                            console.log("Model has been built successfully with code: " + model.code);
                             modelInfo = model;
                         } else {
                             console.log("There is a problem to create the model");
@@ -39,7 +37,7 @@ async function buildModel(){
     });
 }
 
-//to predict the status
+//predict function in bigml (dashboard)
 function predict(arr){
     
     // if(modelInfo = {}){
@@ -47,10 +45,10 @@ function predict(arr){
     //     console.log(str);
     //     return str;
     // }
-    console.log("insert values: " + arr);
+    console.log("inserting values: " + arr);
 
-    const statusToPredict = {'_id':1,'day_type':arr[0], 'month': parseInt(arr[1]),'day':parseInt(arr[2]) ,
-     'company':arr[3], 'leaving_country':arr[4], 'landing_country':arr[5], 'leaving_weather':arr[6], 'landing_weather':arr[7], 'flight_type':arr[8]};
+    const statusToPredict = {'_id':1,'_region':arr[0], '_branch': arr[1],'_topping':Array(arr[2]) ,
+     '_createdAt':arr[3], '_ttl':arr[4]};
     const prediction = new bigml.Prediction(connection);
 
     return new Promise((resolve,reject)=>{
