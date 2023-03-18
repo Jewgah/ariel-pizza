@@ -4,9 +4,6 @@ export class RedisDataOrder
 {
     constructor(orders)
     {
-        // this.averageTimeOrder,
-        // this.openOrders,
-        // this.todayOrders,
         this.tomatoes = false,
         this.onions = false,
         this.peppers = false,
@@ -15,9 +12,9 @@ export class RedisDataOrder
         this.tuna = false,
         this.createdAt = orders._createdAt,
         this.ttl = orders._ttl,
-        // this.ttl,
-        // this.createdAt,
-        
+        this.totalOrdersCount = 0,
+        this.averageOrderTime = 0,
+
         this._topping = orders._topping;
         // loop through each topping and create a dynamic property with a boolean value
         this._topping.forEach((topping) => {
@@ -25,7 +22,4 @@ export class RedisDataOrder
         });
         
     }
-
-
-
 }

@@ -77,7 +77,8 @@ consumer.on('event.error', function(err) {
   process.exit(1);
 });
 consumer.on('event.log', function(log) {
-  console.log(log);
+  //console.log(log);
 });
 consumer.connect();
 
+export default consumer;
