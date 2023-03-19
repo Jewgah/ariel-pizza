@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
+import "./src/routes/Post/post.consume.js"
 
-//import { InitiateMongoServer } from "./src/config/db.js";
+
 import { postRoute } from "../backend/src/routes/Post/post.routes.js";
 import { branchRoute } from "../backend/src/routes/Post/branch.routes.js";
 import dotenv from 'dotenv'
@@ -43,6 +44,4 @@ app.get("/*", reactRoute)
 
 const port = process.env.PORT || 80;
 app.listen(port, console.log(`Listening on port ${port} ...`));
-
-
 

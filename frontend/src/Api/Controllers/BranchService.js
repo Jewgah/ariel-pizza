@@ -7,6 +7,10 @@ class BranchService {
 	static actionBranch(body) {
 		return ApiService.post("api/branch/newbranch", body);
 	}
+
+	// static getAllOpenBranchesByRegion(region) {
+	// 	return ApiService.post("api/branch/branchesbyregion", region);
+	// }
 }
 
 export default BranchService;

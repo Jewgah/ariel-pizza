@@ -67,6 +67,86 @@ export default function Generate() {
 		  },
 	
 	  ]; 
+
+	  	  
+	  const north_branch = [
+		{
+		 value: 'North1',
+		 label: 'North1',
+		},
+		
+		{
+	      value: 'North2',
+	       label: 'North2',
+		},
+		{
+			value: 'North3',
+			label: 'North3',
+		   },
+
+	];
+	const haifa_branch = [
+		{
+			value: 'Haifa1',
+			label: 'Haifa1',
+		   },
+		   
+		   {
+			 value: 'Haifa2',
+			  label: 'Haifa2',
+		   },
+		   {
+			   value: 'Haifa3',
+			   label: 'Haifa3',
+			  },
+	];
+	const central_branch = [
+		{
+			value: 'Central1',
+			label: 'Central1',
+		   },
+		   
+		   {
+			 value: 'Central2',
+			  label: 'Central2',
+		   },
+		   {
+			   value: 'Central3',
+			   label: 'Central3',
+			  },
+	];
+	const dan_branch = [
+		{
+			value: 'Dan1',
+			label: 'Dan1',
+		   },
+		   
+		   {
+			 value: 'Dan2',
+			  label: 'Dan2',
+		   },
+		   {
+			   value: 'Dan3',
+			   label: 'Dan3',
+			  },
+	];
+	const south_branch = [
+		{
+			value: 'South1',
+			label: 'South1',
+		   },
+		   
+		   {
+			 value: 'South2',
+			  label: 'South2',
+		   },
+		   {
+			   value: 'South3',
+			   label: 'South3',
+			  },
+	];
+
+
 	const styles = {
 		paperContainer: {
 			backgroundSize: "cover",
@@ -94,6 +174,17 @@ export default function Generate() {
 	const [branch, setBranch] = React.useState('');
 	const [number, setNumber] = React.useState('');
 	const [showAlert, setShowAlert] = useState(false);
+	const [tagRegion, settagRegion] = useState(north_branch);
+
+	const handleChangeRegion = (event) => {
+		setRegions(event.target.value);
+		if(event.target.value==='North'){settagRegion(north_branch)}
+		if(event.target.value==='Haifa'){settagRegion(haifa_branch)}
+		if(event.target.value==='Central'){settagRegion(central_branch)}
+		if(event.target.value==='Dan'){settagRegion(dan_branch)}
+		if(event.target.value==='South'){settagRegion(south_branch)}
+
+	  };
 
     function generateOrders(region, branch, numOrders) {
         const toppings = [
@@ -101,7 +192,7 @@ export default function Generate() {
           "Onions",
           "Peppers",
           "Mushroom",
-          "Peppperoni",
+          "Pepperoni",
           "Tuna"
         ];
         
@@ -117,11 +208,6 @@ export default function Generate() {
         }
       
       }
-
-
-	const handleChangeRegion = (event) => {
-		setRegions(event.target.value);
-	  };
 
 	  const handleChangeBranch = (event) => {
 		setBranch(event.target.value);
@@ -215,27 +301,25 @@ export default function Generate() {
 								</Grid>
 								<Grid item xs={12}>
 									<TextField
-										required
-										fullWidth
-										id="branch"
-										label="branch"
-										name="branch"
-										type="String"
-									
-										autoComplete="branch:"
-										{...register("branch:", {
-											required: true,
-											pattern: {
-												message: "branch:",
-												
-
-											},
-										})}
+									required
+									id="branch"
+									name="branch"
+									type="String"
+									label="branch"
+									select
+									fullWidth
 									error={errors?.title ? true : false}
 									helperText={errors?.title?.message}
 									value={branch}
 									onChange={handleChangeBranch}
-									/>
+									
+									>
+									{tagRegion.map((option) => (
+										<MenuItem key={option.value} value={option.value}>
+										{option.label}
+										</MenuItem>
+									))}
+									</TextField>
 								</Grid>
 						
 								<Grid item xs={12}>
