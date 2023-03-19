@@ -1,9 +1,8 @@
-
-
 export class RedisDataOrder
 {
     constructor(orders)
     {
+        this.region = orders._region;
         this.tomatoes = false,
         this.onions = false,
         this.peppers = false,

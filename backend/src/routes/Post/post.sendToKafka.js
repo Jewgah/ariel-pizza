@@ -26,7 +26,7 @@ export function sendMessage(region, branch, topping) {
   };
   console.log(topping);
   publish(message);
-  console.log("Message was sent successfully.");
+  console.log("Order Message was sent successfully.");
 }
 
 export function sendBranch(region, branch, action) {
@@ -38,6 +38,6 @@ export function sendBranch(region, branch, action) {
   };
 
   publish(message);
-  console.log("Message was sent successfully.");
+  console.log("Branch Message was sent successfully.");
 }
 

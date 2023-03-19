@@ -87,7 +87,7 @@ consumer.on("data", async function(m) {
     console.log("sent to mongo");
     // send Order to postRedis
     const data = new RedisDataOrder(postRedis);
-    send_order_to_redis(data)
+    send_order_to_redis(data);
   }
   else{
     console.log('no type defined')

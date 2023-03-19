@@ -1,11 +1,5 @@
 import {client} from './connectionRedis.js';
 
-function getData(){
-  client.get('_region', function(err, reply) {
-    console.log(reply);
-  });
-}
-
 
 function getValueFromRedis(key) {
   client.mget(key, function(err, value) {
@@ -19,28 +13,28 @@ function getValueFromRedis(key) {
   });
 }
 
-function getAllKeysFromRedis() {
-  client.keys('*', function(err, keys) {
-    if (err) {
-      console.error(err);
-      //callback(err, null);
-    } else {
-      //console.log('Keys retrieved from Redis:', keys);
-      //callback(null, keys);
-    }
-  });
-}
+// function getAllKeysFromRedis() {
+//   client.keys('*', function(err, keys) {
+//     if (err) {
+//       console.error(err);
+//       //callback(err, null);
+//     } else {
+//       //console.log('Keys retrieved from Redis:', keys);
+//       //callback(null, keys);
+//     }
+//   });
+// }
 
-function generateUniqueId() {
-  client.incr('uniqueId', function(err, id) {
-    if (err) {
-      console.error(err);
-      // callback(err, null);
-    } else {
-      // callback(null, id);
-    }
-  });
-}
+// function generateUniqueId() {
+//   client.incr('uniqueId', function(err, id) {
+//     if (err) {
+//       console.error(err);
+//       // callback(err, null);
+//     } else {
+//       // callback(null, id);
+//     }
+//   });
+// }
 
 
 export function clean_redis_database() {
@@ -165,71 +159,31 @@ console.log('sending data to Redis');
   const createdAtDate = new Date(orders.createdAt)
   const ttlDate = new Date(orders.ttl)
   const expirationTime = Math.floor((ttlDate - createdAtDate)/5000);
-  addOrder(orders.createdAt ,expirationTime);
+  addOrder(orders, expirationTime);
   updateOrderCount();
   deleteExpiredOrders();
 
-  getValueFromRedis('openOrdersCount');
-
 // ###############################
 
-// Resets TotalOrdersCount to 0 after 24h
-resetTotalOrdersCount();
-
 }
-
-
-
-
-// Reset TotalOrdersCount to 0 every day at 12 am
-const resetTotalOrdersCount = () => {
-  const now = new Date();
-  const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
-  const timeout = resetTime.getTime() + 86400000 - now.getTime(); // 86400000 = 24 hours in milliseconds
-  client.set('TotalOrdersCount', 0, (err, reply) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('TotalOrdersCount has been reset to 0');
-      console.log(`TotalOrdersCount will expire in ${Math.floor(timeout / 1000)} seconds`);
-      // Set the timeout to expire at 8:25 am
-      setTimeout(() => {
-        expireTotalOrdersCount();
-      }, timeout);
-    }
-  });
-};
-
-// Set the timeout to expire at 12:00 am
-const expireTotalOrdersCount = () => {
-  const now = new Date();
-  const expiryTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
-  const timeout = expiryTime.getTime() - now.getTime();
-  client.expire('TotalOrdersCount', Math.floor(timeout / 1000), (err, reply) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(`TotalOrdersCount will expire in ${Math.floor(timeout / 1000)} seconds`);
-      resetTotalOrdersCount();
-    }
-  });
-};
-
-
-
-
-
 
 //################################
 
 const ORDER_LIST_KEY = 'openOrders';
 const ORDER_COUNT_KEY = 'openOrdersCount';
 
-// Add an order to the list and set its expiration time
 function addOrder(order, expirationTime) {
-  // Convert the order object to a string to store in Redis
-  const orderString = JSON.stringify(order);
 
+  // Convert the order object to a string to store in Redis
+  const orderString = JSON.stringify(order.createdAt);
+  console.log(`region order = ${JSON.stringify(order.region)}`);
+
+
+  // increments `region`OrderCount by one
+  client.incr(`${order.region}OrderCount`);
+  console.log(`${order.region}OrderCount incremented by 1`);
+
+  //increment TotalOrdersCount and sets averageOrderTime
   client.incr('TotalOrdersCount', (err, totalOrdersCount) => {
     if (err) throw err;
     client.get('averageOrderTime', (err, currentAvgOrderTime) => {
@@ -248,7 +202,7 @@ function addOrder(order, expirationTime) {
     if (err) {
       console.error('Failed to add order to Redis:', err);
     } else {
-      console.log(`Added order to Redis list. Result: ${result}`);
+      //console.log(`Added order to Redis list. Result: ${result}`);
 
       // Set the expiration time for the order
       client.expire(ORDER_LIST_KEY, expirationTime, (err, result) => {
@@ -269,14 +223,14 @@ function updateOrderCount() {
     if (err) {
       console.error('Failed to get order count from Redis:', err);
     } else {
-      console.log(`Order count: ${result}`);
+      console.log(`openOrdersCount: ${result}`);
 
       // Update the order count variable in Redis
       client.set(ORDER_COUNT_KEY, result, (err, result) => {
         if (err) {
           console.error('Failed to update order count in Redis:', err);
         } else {
-          console.log(`Updated order count in Redis to ${result}`);
+          //console.log(`Updated order count in Redis to ${result}`);
         }
       });
     }
@@ -289,7 +243,7 @@ function deleteExpiredOrders() {
     if (err) {
       console.error('Failed to delete expired orders from Redis:', err);
     } else {
-      console.log(`Deleted ${result} expired orders from Redis`);
+      //console.log(`Deleted ${result} expired orders from Redis`);
     }
   });
 }
