@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-import { send_order_to_redis,send_branch_to_redis, clean_redis_database} from './publishradis.js';
+import { send_order_to_redis,send_branch_to_redis, clean_redis_database} from './publishredis.js';
 import { RedisDataOrder } from './post.RedisDataOrder.js';
 import { RedisDataBranches } from './post.RedisDataBranches.js';
 import { Branch } from "./branch.model.js";

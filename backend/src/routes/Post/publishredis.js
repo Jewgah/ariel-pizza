@@ -1,4 +1,4 @@
-import {client} from './connectionRadis.js';
+import {client} from './connectionRedis.js';
 
 function getData(){
   client.get('_region', function(err, reply) {
@@ -295,15 +295,5 @@ function deleteExpiredOrders() {
     }
   });
 }
-
-
-//################################
-
-
-// module.exports = { send_to_radis };
-// client.quit();
-
-
-
 
 

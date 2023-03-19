@@ -1,4 +1,4 @@
-import {client} from './connectionRadis.js';
+import {client} from './connectionRedis.js';
 
 
 client.subscribe('mychannel');
