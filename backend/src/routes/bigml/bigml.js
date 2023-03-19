@@ -70,5 +70,5 @@ export function predict(arr){
  
 };
 
-// buildModel();
-//module.exports = {buildModel ,predict};
+buildModel();
+module.exports = {buildModel ,predict};
