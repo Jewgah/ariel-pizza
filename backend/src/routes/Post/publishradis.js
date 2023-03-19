@@ -52,21 +52,31 @@ export function clean_redis_database() {
 }
 
 export function send_branch_to_redis(data) {
-  console.log('data = ',data);
+  //console.log('data = ',data);
 
+
+  // #### UPDATE count open branches
   const redisKey =  JSON.stringify(data.branches._branch);
-  const redisData =  JSON.stringify({ _action: data.branches._action });
+  const redisData =  JSON.stringify(data.branches._action);
 
+  // updating db
   console.log('redisKey = ',redisKey,' and redisData = ', redisData);
   client.hset('Branches', redisKey, redisData, (err) => {
     if (err) {
       console.error(err);
     } else {
-      console.log(`Redis data updated: ${redisKey} : ${redisData}`);
+      //console.log(`Redis data updated: ${redisKey} : ${redisData}`);
     }
   });
 
-  count_true_actions();
+  //updates number of open branches
+  updateOpenBranchCount();
+
+  //logs number of openbranches
+  getOpenBranchCount();
+
+  //print all branches data
+  print_all_branch_data();
 }
 
 export function print_all_branch_data() {
@@ -79,7 +89,7 @@ export function print_all_branch_data() {
   });
 }
 
-function count_true_actions() {
+function updateOpenBranchCount() {
   let count = 0;
 
   client.hgetall('Branches', (err, data) => {
@@ -89,20 +99,36 @@ function count_true_actions() {
       for (const [key, value] of Object.entries(data)) {
         try {
           const actions = JSON.parse(value);
-          console.log(`actions - ${actions} | action = ${action} and value = ${value} `);
-          for (const [action, value] of Object.entries(actions)) {
-            if (value === '"open"') {
+            if (actions === "open") {
               count++;
             }
-          }
         } catch (error) {
           console.error(`Error parsing JSON for branch ${key}: ${value}`);
         }
       }
-      console.log(`Number of true actions: ${count}`);
+
+      //updates branch open counter on Redis
+      client.set('openBranchCount', count, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          //console.log(`Redis data updated: openBranchCount : ${count}`);
+        }
+      });
     }
   });
 }
+
+function getOpenBranchCount() {
+  client.get('openBranchCount', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`Open Branch Count: ${data}`);
+    }
+  });
+}
+
 
 
 

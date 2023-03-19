@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-import { send_order_to_redis,send_branch_to_redis, clean_redis_database, print_all_branch_data } from './publishradis.js';
+import { send_order_to_redis,send_branch_to_redis, clean_redis_database} from './publishradis.js';
 import { RedisDataOrder } from './post.RedisDataOrder.js';
 import { RedisDataBranches } from './post.RedisDataBranches.js';
 import { Branch } from "./branch.model.js";
@@ -63,7 +63,6 @@ consumer.on("data", async function(m) {
 
     const data = new RedisDataBranches(branchData);
     send_branch_to_redis(data);
-    print_all_branch_data();
   }
 
   else if (typeof message.topping !== "undefined") {
