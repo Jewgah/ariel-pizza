@@ -23,17 +23,6 @@ const {client} = require('./connectDashboardToRedis');
     });
   }
 
-// get toppingsCount
-// let tomatoesCount;
-// getValueFromRedis("tomatoesCount")
-//   .then((data) => {
-//     console.log(`Open Branch Count: ${data}`);
-//     tomatoesCount = data;
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
-
   module.exports = {
     print_all_branch_data, getValueFromRedis
   };

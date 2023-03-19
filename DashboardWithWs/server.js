@@ -5,14 +5,16 @@ const {getValueFromRedis} = require('../DashboardWithWs/public/js/core/getDataFr
 
 const port=3001;
 
-app.use(express.static('public'))
-app.set('view engine', 'ejs')
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
+
+console.log('Data in Redis:');
 // get openBranchCount
 let openBranchCount;
 getValueFromRedis("openBranchCount")
   .then((data) => {
-    console.log(`Open Branch Count: ${data}`);
+    console.log(`OpenBranches Count: ${data}`);
     openBranchCount = data;
   })
   .catch((err) => {
@@ -23,7 +25,7 @@ getValueFromRedis("openBranchCount")
 let avgOrderTime;
 getValueFromRedis("averageOrderTime")
   .then((data) => {
-    console.log(`averageOrderTime Count: ${data}`);
+    console.log(`averageOrderTime Count: ${data} minutes`);
     avgOrderTime = Math.floor(data);
   })
   .catch((err) => {
@@ -52,11 +54,129 @@ getValueFromRedis("TotalOrdersCount")
   });
 
 
-  
+  let NorthOrderCount;
+  getValueFromRedis("NorthOrderCount")
+  .then((data) => {
+    console.log(`NorthOrderCount: ${data}`);
+    NorthOrderCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
-//console.log(`Open Branch Count: ${openBranchCount}`);
-//console.log(openBranchCount);
-//get data from redis
+  let HaifaOrderCount;
+  getValueFromRedis("HaifaOrderCount")
+  .then((data) => {
+    console.log(`HaifaOrderCount: ${data}`);
+    HaifaOrderCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  let CentralOrderCount;
+  getValueFromRedis("CentralOrderCount")
+  .then((data) => {
+    console.log(`CentralOrderCount: ${data}`);
+    CentralOrderCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  let DanOrderCount;
+  getValueFromRedis("DanOrderCount")
+  .then((data) => {
+    console.log(`DanOrderCount: ${data}`);
+    DanOrderCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  let SouthOrderCount;
+  getValueFromRedis("SouthOrderCount")
+  .then((data) => {
+    console.log(`SouthOrderCount: ${data}`);
+    SouthOrderCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+
+  // get tomatoCount
+let tomatoCount;
+getValueFromRedis("tomatoCount")
+  .then((data) => {
+    console.log(`tomatoCount Count: ${data}`);
+    tomatoCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  // get onionsCount
+let onionsCount;
+getValueFromRedis("onionsCount")
+  .then((data) => {
+    console.log(`onionsCount Count: ${data}`);
+    onionsCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+    // get peppersCount
+let peppersCount;
+getValueFromRedis("peppersCount")
+  .then((data) => {
+    console.log(`peppersCount Count: ${data}`);
+    peppersCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+// get mushroomCount
+let mushroomCount;
+getValueFromRedis("mushroomCount")
+  .then((data) => {
+    console.log(`mushroomCount Count: ${data}`);
+    mushroomCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  // get pepperoniCount
+let pepperoniCount;
+getValueFromRedis("pepperoniCount")
+  .then((data) => {
+    console.log(`pepperoniCount Count: ${data}`);
+    pepperoniCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+// get tunaCount
+let tunaCount;
+getValueFromRedis("tunaCount")
+  .then((data) => {
+    console.log(`tunaCount Count: ${data}`);
+    tunaCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  let toppingsCount = [tomatoCount, onionsCount, peppersCount, mushroomCount, pepperoniCount, tunaCount];
+  toppingsCount.sort((a, b) => b - a); // Sort the array in descending order
+  toppingsCount = toppingsCount.slice(0, 5); // Keep only the first 5 elements
+
+  console.log(`toppingcount: ${toppingsCount}`);
+
 app.get('/', (req, res) => {
   var data = {
     cards: [

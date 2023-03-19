@@ -158,7 +158,7 @@ console.log('sending data to Redis');
 
   const createdAtDate = new Date(orders.createdAt)
   const ttlDate = new Date(orders.ttl)
-  const expirationTime = Math.floor((ttlDate - createdAtDate)/5000);
+  const expirationTime = Math.floor((ttlDate - createdAtDate)/3500);
   addOrder(orders, expirationTime);
   updateOrderCount();
   deleteExpiredOrders();
@@ -183,15 +183,18 @@ function addOrder(order, expirationTime) {
   client.incr(`${order.region}OrderCount`);
   console.log(`${order.region}OrderCount incremented by 1`);
 
+
+  console.log(`expirationTime = ${expirationTime} seconds = ${expirationTime/60} minutes`);
   //increment TotalOrdersCount and sets averageOrderTime
   client.incr('TotalOrdersCount', (err, totalOrdersCount) => {
     if (err) throw err;
     client.get('averageOrderTime', (err, currentAvgOrderTime) => {
       if (err) throw err;
-      // currentAvgOrderTime = currentAvgOrderTime / 60;
-      // let newAvgOrderTime = Math.floor(((totalOrdersCount - 1) * currentAvgOrderTime + (expirationTime/60)) / totalOrdersCount);
-      console.log(`TotalOrdersCount = ${totalOrdersCount}`)
-      client.set('averageOrderTime', expirationTime/60, (err, result) => {
+      console.log(`TotalOrdersCount = ${totalOrdersCount}`);
+      console.log(`currentAvgOrderTime = ${currentAvgOrderTime} minutes`);
+      let newAvgOrderTime = Math.floor(((totalOrdersCount - 1) * currentAvgOrderTime + (expirationTime/60)) / totalOrdersCount);
+      console.log(`newAvgOrderTime = ${newAvgOrderTime} minutes`)
+      client.set('averageOrderTime', newAvgOrderTime, (err, result) => {
         if (err) throw err;
         //console.log(`New order added. Total orders: ${totalOrdersCount}, old average order time: ${currentAvgOrderTime} new average order time: ${newAvgOrderTime} minutes`);
       });
