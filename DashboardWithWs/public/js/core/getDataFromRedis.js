@@ -1,21 +1,6 @@
 const {client} = require('./connectDashboardToRedis');
 
-
-function getOpenBranchCount() {
-    return new Promise((resolve, reject) => {
-      client.get('openBranchCount', (err, data) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          //console.log(`Open Branch Count: ${data}`);
-          resolve(data);
-        }
-      });
-    });
-  }
   
-
   function print_all_branch_data() {
     client.hgetall('Branches', (err, data) => {
       if (err) {
@@ -26,7 +11,19 @@ function getOpenBranchCount() {
     });
   }
 
+  function getValueFromRedis(key) {
+    return new Promise((resolve, reject) => {
+      client.mget(key, function(err, value) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(value);
+        }
+      });
+    });
+  }
+
   module.exports = {
-    getOpenBranchCount,print_all_branch_data
+    print_all_branch_data, getValueFromRedis
   };
   

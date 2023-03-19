@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express();
 const socketIO = require('socket.io');
-const {getOpenBranchCount} = require('../DashboardWithWs/public/js/core/getDataFromRedis');
+const {getValueFromRedis} = require('../DashboardWithWs/public/js/core/getDataFromRedis');
 
 const port=3001;
 
@@ -11,7 +11,7 @@ app.set('view engine', 'ejs')
 
 let openBranchCount;
 
-getOpenBranchCount()
+getValueFromRedis("openBranchCount")
   .then((data) => {
     console.log(`Open Branch Count: ${data}`);
     openBranchCount = data;
