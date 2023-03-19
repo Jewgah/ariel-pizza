@@ -51,8 +51,26 @@ export function clean_redis_database() {
   });
 }
 
+export function send_branch_to_redis(branchesData) {
+  if (!Array.isArray(branchesData)) {
+    console.error('branchesData is not an array');
+    return;
+  }
 
-export function send_to_redis(orders) {
+  branchesData.forEach(branch => {
+    const { region, branch: branchName, action } = branch.toJSON();
+    redisClient.hmset(`branches:${region}:${branchName}`, 'action', action, (err, res) => {
+      if (err) {
+        console.error(`Error logging branch ${branchName} in region ${region}:`, err);
+      } else {
+        console.log(`Branch ${branchName} in region ${region} logged with action ${action}`);
+      }
+    });
+  });
+}
+
+
+export function send_order_to_redis(orders) {
 console.log('sending data to Redis');
 
   if (orders.tomatoes) {
@@ -109,12 +127,12 @@ function addOrder(order, expirationTime) {
     if (err) throw err;
     client.get('averageOrderTime', (err, currentAvgOrderTime) => {
       if (err) throw err;
-      let newAvgOrderTime = ((totalOrdersCount - 1) * currentAvgOrderTime + expirationTime) / totalOrdersCount;
-      newAvgOrderTime = Math.floor(newAvgOrderTime / 60); // Convert to minutes and round down
-      console.log(`TotalOrdersCount = ${totalOrdersCount} and newAvgOrderTime = ${newAvgOrderTime} seconds`)
+      currentAvgOrderTime = currentAvgOrderTime / 60;
+      let newAvgOrderTime = Math.floor(((totalOrdersCount - 1) * currentAvgOrderTime + (expirationTime/60)) / totalOrdersCount);
+      console.log(`TotalOrdersCount = ${totalOrdersCount}`)
       client.set('averageOrderTime', newAvgOrderTime, (err, result) => {
         if (err) throw err;
-        console.log(`New order added. Total orders: ${totalOrdersCount}, new average order time: ${newAvgOrderTime} minutes`);
+        console.log(`New order added. Total orders: ${totalOrdersCount}, old average order time: ${currentAvgOrderTime} new average order time: ${newAvgOrderTime} minutes`);
       });
     });
   });

@@ -29,5 +29,15 @@ export function sendMessage(region, branch, topping) {
   console.log("Message was sent successfully.");
 }
 
-// module.exports = { sendMessage };
+export function sendBranch(region, branch, action) {
+
+  const message = {
+    region,
+    branch,
+    action,
+  };
+
+  publish(message);
+  console.log("Message was sent successfully.");
+}
 
