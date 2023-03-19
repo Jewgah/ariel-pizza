@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from 'node-rdkafka';
 import { Post } from "./post.model.js";
-import { send_order_to_redis,send_branch_to_redis, clean_redis_database } from './publishradis.js';
+import { send_order_to_redis,send_branch_to_redis, clean_redis_database, print_all_branch_data } from './publishradis.js';
 import { RedisDataOrder } from './post.RedisDataOrder.js';
 import { RedisDataBranches } from './post.RedisDataBranches.js';
 import { Branch } from "./branch.model.js";
@@ -24,10 +24,10 @@ const prefix = "aybcvzxf-";
 const topic = `${prefix}new`;
 // const producer = new pkg.Producer(kafkaConf);
 
-const genMessage = m => new Buffer.alloc(m.length,m);
+// const genMessage = m => new Buffer.alloc(m.length,m);
 //const prefix = process.env.CLOUDKARAFKA_USERNAME;
 console.log("calling for the consumer");
-console.log(genMessage);
+// console.log(genMessage);
 // console.log(producer)
 
 const topics = [topic];
@@ -62,7 +62,8 @@ consumer.on("data", async function(m) {
     console.log("sent to mongo");
 
     const data = new RedisDataBranches(branchData);
-   // send_branch_to_redis(data)
+    send_branch_to_redis(data);
+    print_all_branch_data();
   }
 
   else if (typeof message.topping !== "undefined") {

@@ -51,23 +51,59 @@ export function clean_redis_database() {
   });
 }
 
-export function send_branch_to_redis(branchesData) {
-  if (!Array.isArray(branchesData)) {
-    console.error('branchesData is not an array');
-    return;
-  }
+export function send_branch_to_redis(data) {
+  console.log('data = ',data);
 
-  branchesData.forEach(branch => {
-    const { region, branch: branchName, action } = branch.toJSON();
-    redisClient.hmset(`branches:${region}:${branchName}`, 'action', action, (err, res) => {
-      if (err) {
-        console.error(`Error logging branch ${branchName} in region ${region}:`, err);
-      } else {
-        console.log(`Branch ${branchName} in region ${region} logged with action ${action}`);
-      }
-    });
+  const redisKey =  JSON.stringify(data.branches._branch);
+  const redisData =  JSON.stringify({ _action: data.branches._action });
+
+  console.log('redisKey = ',redisKey,' and redisData = ', redisData);
+  client.hset('Branches', redisKey, redisData, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`Redis data updated: ${redisKey} : ${redisData}`);
+    }
+  });
+
+  count_true_actions();
+}
+
+export function print_all_branch_data() {
+  client.hgetall('Branches', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('hgetall Branches: ',data);
+    }
   });
 }
+
+function count_true_actions() {
+  let count = 0;
+
+  client.hgetall('Branches', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      for (const [key, value] of Object.entries(data)) {
+        try {
+          const actions = JSON.parse(value);
+          console.log(`actions - ${actions} | action = ${action} and value = ${value} `);
+          for (const [action, value] of Object.entries(actions)) {
+            if (value === '"open"') {
+              count++;
+            }
+          }
+        } catch (error) {
+          console.error(`Error parsing JSON for branch ${key}: ${value}`);
+        }
+      }
+      console.log(`Number of true actions: ${count}`);
+    }
+  });
+}
+
 
 
 export function send_order_to_redis(orders) {
