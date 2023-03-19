@@ -24,7 +24,7 @@ let avgOrderTime;
 getValueFromRedis("averageOrderTime")
   .then((data) => {
     console.log(`averageOrderTime Count: ${data}`);
-    avgOrderTime = data;
+    avgOrderTime = Math.floor(data);
   })
   .catch((err) => {
     console.error(err);
@@ -40,6 +40,19 @@ getValueFromRedis("openOrdersCount")
     console.error(err);
   });
 
+  
+let TotalOrdersCount;
+getValueFromRedis("TotalOrdersCount")
+  .then((data) => {
+    console.log(`TotalOrdersCount Count: ${data}`);
+    TotalOrdersCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+
+  
 
 //console.log(`Open Branch Count: ${openBranchCount}`);
 //console.log(openBranchCount);
@@ -50,7 +63,7 @@ app.get('/', (req, res) => {
       {districtId:"open_branchs", title: "סניפים פתוחים", value: openBranchCount, unit: "branches", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
       {districtId:"average_time", title: "זמן טיפול ממוצע", value: avgOrderTime, unit: "minutes", fotterIcon: "", fotterText: "נפח ממוצע", icon: "timelapse" },
       {districtId:"total_open_orders", title: "סהײכ הזמנות פתוחות", value: openOrdersCount, unit: "orders", fotterIcon: "", fotterText: "נפח ממוצע", icon: "local_shipping" },
-      {districtId:"total_orders", title: "סהײכ הזמנות היום", value: 700, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "add_shopping_cart" }
+      {districtId:"total_orders", title: "סהײכ הזמנות היום", value: TotalOrdersCount, unit: "orders", fotterIcon: "", fotterText: "נפח ממוצע", icon: "add_shopping_cart" }
     ]
   }
   res.render("pages/dashboard", data)

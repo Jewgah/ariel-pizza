@@ -173,7 +173,54 @@ console.log('sending data to Redis');
 
 // ###############################
 
+// Resets TotalOrdersCount to 0 after 24h
+resetTotalOrdersCount();
+
 }
+
+
+const redis = require('redis');
+
+const client = redis.createClient(); // create Redis client
+
+// Reset TotalOrdersCount to 0 every day at 12 am
+const resetTotalOrdersCount = () => {
+  const now = new Date();
+  const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+  const timeout = resetTime.getTime() + 86400000 - now.getTime(); // 86400000 = 24 hours in milliseconds
+  client.set('TotalOrdersCount', 0, (err, reply) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('TotalOrdersCount has been reset to 0');
+      console.log(`TotalOrdersCount will expire in ${Math.floor(timeout / 1000)} seconds`);
+      // Set the timeout to expire at 8:25 am
+      setTimeout(() => {
+        expireTotalOrdersCount();
+      }, timeout);
+    }
+  });
+};
+
+// Set the timeout to expire at 12:00 am
+const expireTotalOrdersCount = () => {
+  const now = new Date();
+  const expiryTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 00, 0);
+  const timeout = expiryTime.getTime() - now.getTime();
+  client.expire('TotalOrdersCount', Math.floor(timeout / 1000), (err, reply) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`TotalOrdersCount will expire in ${Math.floor(timeout / 1000)} seconds`);
+      resetTotalOrdersCount();
+    }
+  });
+};
+
+
+
+
+
 
 //################################
 
