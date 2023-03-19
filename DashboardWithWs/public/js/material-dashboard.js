@@ -15,6 +15,81 @@
 
  */
 
+const {getValueFromRedis} = require('./core/getDataFromRedis');
+
+// get tomatoCount
+let tomatoCount;
+getValueFromRedis("tomatoCount")
+  .then((data) => {
+    console.log(`tomatoCount Count: ${data}`);
+    tomatoCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  // get onionsCount
+let onionsCount;
+getValueFromRedis("onionsCount")
+  .then((data) => {
+    console.log(`onionsCount Count: ${data}`);
+    onionsCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+    // get peppersCount
+let peppersCount;
+getValueFromRedis("peppersCount")
+  .then((data) => {
+    console.log(`peppersCount Count: ${data}`);
+    peppersCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+// get mushroomCount
+let mushroomCount;
+getValueFromRedis("mushroomCount")
+  .then((data) => {
+    console.log(`mushroomCount Count: ${data}`);
+    mushroomCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  // get pepperoniCount
+let pepperoniCount;
+getValueFromRedis("pepperoniCount")
+  .then((data) => {
+    console.log(`pepperoniCount Count: ${data}`);
+    pepperoniCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+    // get pepperoniCount
+let tunaCount;
+getValueFromRedis("tunaCount")
+  .then((data) => {
+    console.log(`tunaCount Count: ${data}`);
+    tunaCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  let toppingsCount = [onionsCount, peppersCount, mushroomCount, pepperoniCount, tunaCount];
+  toppingsCount.sort((a, b) => b - a); // Sort the array in descending order
+  toppingsCount = toppingsCount.slice(0, 5); // Keep only the first 5 elements
+
+
+
+
 (function() {
   isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
@@ -314,9 +389,7 @@ md = {
 
       dataDailySalesChart = {
         labels: ['🍅', '🐟', '🔴', '🍄', '🧅'],
-        series: [
-          [72, 57, 47, 33, 23]
-        ]
+        series: toppingsCount
       };
 
       optionsDailySalesChart = {

@@ -8,9 +8,8 @@ const port=3001;
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
-
+// get openBranchCount
 let openBranchCount;
-
 getValueFromRedis("openBranchCount")
   .then((data) => {
     console.log(`Open Branch Count: ${data}`);
@@ -20,15 +19,37 @@ getValueFromRedis("openBranchCount")
     console.error(err);
   });
 
+
+let avgOrderTime;
+getValueFromRedis("averageOrderTime")
+  .then((data) => {
+    console.log(`averageOrderTime Count: ${data}`);
+    avgOrderTime = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+let openOrdersCount;
+getValueFromRedis("openOrdersCount")
+  .then((data) => {
+    console.log(`openOrdersCount Count: ${data}`);
+    openOrdersCount = data;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+
 //console.log(`Open Branch Count: ${openBranchCount}`);
 //console.log(openBranchCount);
 //get data from redis
 app.get('/', (req, res) => {
   var data = {
     cards: [
-      {districtId:"open_branchs", title: "סניפים פתוחים", value: openBranchCount, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
-      {districtId:"average_time", title: "זמן טיפול ממוצע", value: 1500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "timelapse" },
-      {districtId:"total_open_orders", title: "סהײכ הזמנות פתוחות", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "local_shipping" },
+      {districtId:"open_branchs", title: "סניפים פתוחים", value: openBranchCount, unit: "branches", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
+      {districtId:"average_time", title: "זמן טיפול ממוצע", value: avgOrderTime, unit: "minutes", fotterIcon: "", fotterText: "נפח ממוצע", icon: "timelapse" },
+      {districtId:"total_open_orders", title: "סהײכ הזמנות פתוחות", value: openOrdersCount, unit: "orders", fotterIcon: "", fotterText: "נפח ממוצע", icon: "local_shipping" },
       {districtId:"total_orders", title: "סהײכ הזמנות היום", value: 700, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "add_shopping_cart" }
     ]
   }

@@ -189,12 +189,12 @@ function addOrder(order, expirationTime) {
     if (err) throw err;
     client.get('averageOrderTime', (err, currentAvgOrderTime) => {
       if (err) throw err;
-      currentAvgOrderTime = currentAvgOrderTime / 60;
-      let newAvgOrderTime = Math.floor(((totalOrdersCount - 1) * currentAvgOrderTime + (expirationTime/60)) / totalOrdersCount);
+      // currentAvgOrderTime = currentAvgOrderTime / 60;
+      // let newAvgOrderTime = Math.floor(((totalOrdersCount - 1) * currentAvgOrderTime + (expirationTime/60)) / totalOrdersCount);
       console.log(`TotalOrdersCount = ${totalOrdersCount}`)
-      client.set('averageOrderTime', newAvgOrderTime, (err, result) => {
+      client.set('averageOrderTime', expirationTime/60, (err, result) => {
         if (err) throw err;
-        console.log(`New order added. Total orders: ${totalOrdersCount}, old average order time: ${currentAvgOrderTime} new average order time: ${newAvgOrderTime} minutes`);
+        //console.log(`New order added. Total orders: ${totalOrdersCount}, old average order time: ${currentAvgOrderTime} new average order time: ${newAvgOrderTime} minutes`);
       });
     });
   });
