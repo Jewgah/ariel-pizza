@@ -188,9 +188,9 @@ md = {
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
       dataDailySalesChart = {
-        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: ['Tomatoes', 'Tuna', 'Pepperoni', 'Mushrooms', 'Onion'],
         series: [
-          [12, 17, 7, 17, 23, 18, 38]
+          [72, 57, 47, 33, 23]
         ]
       };
 
@@ -313,9 +313,9 @@ md = {
       /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
       dataDailySalesChart = {
-        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: ['🍅', '🐟', '🔴', '🍄', '🧅'],
         series: [
-          [42, 17, 7, 17, 23, 18, 38]
+          [72, 57, 47, 33, 23]
         ]
       };
 
@@ -324,7 +324,7 @@ md = {
           tension: 0
         }),
         low: 0,
-        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
           top: 0,
           right: 0,
@@ -371,9 +371,9 @@ md = {
       /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
 
       var dataWebsiteViewsChart = {
-        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+        labels: ['North1', 'North2', 'Haifa3', 'South2', 'Dan3'],
         series: [
-          [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+          [33,35,44,48,52]
 
         ]
       };
@@ -382,7 +382,7 @@ md = {
           showGrid: false
         },
         low: 0,
-        high: 1000,
+        high: 60,
         chartPadding: {
           top: 0,
           right: 5,

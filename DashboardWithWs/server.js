@@ -2,7 +2,7 @@ const express = require('express')
 const app = express();
 const socketIO = require('socket.io');
 
-const port=3000;
+const port=3001;
 
 app.use(express.static('public'))
 
@@ -11,10 +11,12 @@ app.set('view engine', 'ejs')
 app.get('/', (req, res) => {
   var data = {
     cards: [
-      {districtId:"haifa", title: "חיפה", value: 500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "content_copy" },
-      {districtId:"dan", title: "דן", value: 1500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
-      {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
-      {districtId:"south", title: "ס,", value: 700, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "add_shopping_cart" }
+      {districtId:"open_branchs", title: "סניפים פתוחים", value: 500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
+      {districtId:"average_time", title: "זמן טיפול ממוצע", value: 1500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "timelapse" },
+      {districtId:"total_open_orders", title: "סהײכ הזמנות פתוחות", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "local_shipping" },
+      {districtId:"total_orders", title: "סהײכ הזמנות היום", value: 700, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "add_shopping_cart" }
+
+      
     ]
   }
   res.render("pages/dashboard", data)
@@ -28,7 +30,7 @@ app.get('/setData/:districtId/:value', function (req, res) {
 
 const server = express()
   .use(app)
-  .listen(3000, () => console.log(`Listening Socket on http://localhost:3000`));
+  .listen(3001, () => console.log(`Listening Socket on http://localhost:3001`));
 const io = socketIO(server);
 
 //------------
