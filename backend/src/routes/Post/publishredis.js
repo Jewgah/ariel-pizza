@@ -179,9 +179,7 @@ resetTotalOrdersCount();
 }
 
 
-const redis = require('redis');
 
-const client = redis.createClient(); // create Redis client
 
 // Reset TotalOrdersCount to 0 every day at 12 am
 const resetTotalOrdersCount = () => {
@@ -205,7 +203,7 @@ const resetTotalOrdersCount = () => {
 // Set the timeout to expire at 12:00 am
 const expireTotalOrdersCount = () => {
   const now = new Date();
-  const expiryTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 00, 0);
+  const expiryTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
   const timeout = expiryTime.getTime() - now.getTime();
   client.expire('TotalOrdersCount', Math.floor(timeout / 1000), (err, reply) => {
     if (err) {
