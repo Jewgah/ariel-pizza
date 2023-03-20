@@ -1,4 +1,3 @@
-import express from 'express';
 import { MongoClient } from 'mongodb';
 import fastcsv from 'fast-csv';
 import fs from 'fs';
@@ -9,7 +8,7 @@ const uri = "mongodb+srv://ormendel:1234@cluster0.czuhh3m.mongodb.net/DataPizza?
 const client = new MongoClient(uri);
 const dbName = "DataPizza";
 const db = client.db(dbName);
-const collection = db.collection("orders1");
+const collection = db.collection("orders");
 
 
 async function main() {
@@ -21,19 +20,6 @@ async function main() {
         console.error(e);
     }
 }
-
-// Here we insert the data to MongoDB
-async function insertToMongo(msg){
-    try{
-        await client.connect();
-        const p = await collection.insertOne(msg);
-        console.log("inserted to MongoDB successfully");
-    }catch(e){
-        console.error(e);
-    }finally{
-        await client.close();
-    }
-};
 
 // For BigML we need to convert the data in mongo to csv
 export async function mongoToCsv(){
@@ -49,5 +35,5 @@ export async function mongoToCsv(){
       });
 };
 
-
+main();
 //module.exports = {MongoClient, insertToMongo ,mongoToCsv};

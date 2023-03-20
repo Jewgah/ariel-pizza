@@ -4,7 +4,7 @@ import {mongoToCsv} from "./ConnectMongoDB.js"
 //Import BigML connection
 import bigml from "bigml";
 
-const connection = new bigml.BigML('ORIMENDEL','1f3caca0bf1faeb3df5a68cba36e455396e7242e'); //my API
+const connection = new bigml.BigML('ormendel78','1f3caca0bf1faeb3df5a68cba36e455396e7242e'); //my API
 const source = new bigml.Source(connection);
 let modelInfo = {}; //for prediction function
 
