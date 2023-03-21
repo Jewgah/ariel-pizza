@@ -8,6 +8,8 @@ import { send_order_to_redis,send_branch_to_redis, clean_redis_database} from '.
 import { RedisDataOrder } from './post.RedisDataOrder.js';
 import { RedisDataBranches } from './post.RedisDataBranches.js';
 import { Branch } from "./branch.model.js";
+import {client} from "./connectionElasticSearch.js";
+
 
 const kafkaConf = {
   "group.id": "aybcvzxf-group1",
@@ -44,6 +46,33 @@ consumer.on("ready", function(arg) {
   consumer.consume();
 });
 
+ 
+ 
+async function indexDocument(topping,averageTime) {
+
+  console.log("averageTime: " + averageTime)
+  // const averageTime =  order.ttl - order.createdAt;
+  // console.log("order ttl : " + order.ttl + " order.createAt: " + order.createdAt + " averageTime: " + averageTime);
+  try {
+    const response = await client.index({
+      index: "orders1",
+      id: "1",
+      document: {topping: topping, average_time: averageTime},
+    });
+    if (response.result == "created") {
+      console.log("Document Indexed Successfully");
+    } else {
+      console.log("Document Index FAILED");
+    }
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+
+
+
 consumer.on("data", async function(m) {
   
   const message = JSON.parse((m.value.toString()));
@@ -57,12 +86,38 @@ consumer.on("data", async function(m) {
       _action: message.action,
     });
 
+    
+    //searchDocuments();
+    
+    // async function createIndex() {
+      // const indexName = message.branch.toLowerCase();
+
+      // try {
+      //   const response = client.indices.create({
+      //     index: indexName,
+      //     body: {
+      //       // define the index settings and mappings here
+      //     }
+      //   });
+      //   console.log(`Index "${indexName}" created successfully:`, response);
+      // } catch (err) {
+      //   console.error(`Failed to create index "${indexName}":`, err);
+      // }
+
+      //setIndex(branchData);
+
+
+ 
+
+
+
+
     // send branch to mongoDB
     branchData.save();
     console.log("sent to mongo");
 
-    const data = new RedisDataBranches(branchData);
-    send_branch_to_redis(data);
+    //const data = new RedisDataBranches(branchData);
+    //send_branch_to_redis(data);
   }
 
   else if (typeof message.topping !== "undefined") {
@@ -81,7 +136,17 @@ consumer.on("data", async function(m) {
     _createdAt: message.createdAt,
     _ttl : message.ttl
   });
+  const time = Number(message.ttl)-Number(message.createdAt)
+  console.log("time: " + time);
+  indexDocument(message.topping,time);
+  
 
+
+
+  // const { body } = await client.search({
+  //   index: indexName.toLowerCase()
+  // });
+  // console.log("body: " + body.hits);
     // send Order to mongoDB
     post.save();
     console.log("sent to mongo");
