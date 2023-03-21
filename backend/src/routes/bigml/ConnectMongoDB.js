@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 import fastcsv from 'fast-csv';
 import fs from 'fs';
+import { sep } from 'path';
 
 
 //my connection, with my usename and password (also in env)
@@ -25,6 +26,15 @@ async function main() {
 export async function mongoToCsv(){
     await client.connect();
      
+    const result = await collection.find({}).toArray();
+    let jsonResult = JSON.stringify(result, '\t');
+    let seperatedValues = jsonResult.split(',');
+    console.log("\n"+"this is the seperated document values:\n");
+    console.log(seperatedValues);
+    
+    fs.writeFileSync('orders.json',jsonResult);
+    console.log("check here if orders.json is ok");
+
     await collection.find({}).toArray((err, data) => {
         if (err) throw err;
 
@@ -35,5 +45,4 @@ export async function mongoToCsv(){
       });
 };
 
-main();
 //module.exports = {MongoClient, insertToMongo ,mongoToCsv};
