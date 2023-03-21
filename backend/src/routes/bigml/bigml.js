@@ -59,7 +59,8 @@ console.log("inserting values: " + arr);
 const statusToPredict = {'_id':1,'_region':arr[0], '_branch': arr[1],'_topping':Array(arr[2]) ,
     '_createdAt':arr[3], '_ttl':arr[4]};
 const prediction = new bigml.Prediction(connection);
-extractRules(rules,items);}
+extractRules(rules,items);
+}
 
 const extractRules = (rules, items) => {
     const sets = [];
@@ -70,11 +71,11 @@ const extractRules = (rules, items) => {
       let consequents = "";
   
       for (let i = 0; i < antecedent.length; ++i) {
-        antecedents += items[antecedent[i]].name;
+        antecedents += items[antecedent[i]]._topping;
         if (i < antecedent.length - 1) antecedents += ", ";
       }
       for (let i = 0; i < consequent.length; ++i) {
-        consequents += items[consequent[i]].name;
+        consequents += items[consequent[i]]._topping;
         if (i < consequent.length - 1) consequents += ", ";
       }
       const support = rules[i].support[0] * 100 + "%";
@@ -105,13 +106,14 @@ export async function saveToppings()
     data_row.push()
     const toppings = row._topping.split(',');
     toppingsArray.push(toppings);
-    predict(data_row)
     data_row = []
     })
     .on('end', () => {
       // Here you can do something with toppingsArray
+      predict(data_row);
       toppingsArray.forEach((data_row,toppings, index) => {
         console.log(`order #${index + 1} has toppings: ${toppings.join(', ')}`)
+    
         });
         
     });
