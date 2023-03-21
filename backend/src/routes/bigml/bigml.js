@@ -109,7 +109,7 @@ export async function saveToppings()
     data_row = []
     })
     .on('end', () => {
-      // Here you can do something with toppingsArray
+      // predict function for the whole collection
       predict(data_row);
       toppingsArray.forEach((data_row,toppings, index) => {
         console.log(`order #${index + 1} has toppings: ${toppings.join(', ')}`)
@@ -118,5 +118,5 @@ export async function saveToppings()
         
     });
 }
-
+buildModel();
 saveToppings();
