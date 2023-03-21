@@ -58,6 +58,15 @@ console.log("inserting values: " + arr);
 
 const statusToPredict = {'_id':1,'_region':arr[0], '_branch': arr[1],'_topping':Array(arr[2]) ,
     '_createdAt':arr[3], '_ttl':arr[4]};
+
+    if (statusToPredict._topping) { // check if _topping is defined
+        const predictionToppings = statusToPredict._topping.filter((item) => {
+            return item != ""; // exclude empty strings
+        });
+        
+        statusToPredict._topping = predictionToppings;
+    }    
+
 const prediction = new bigml.Prediction(connection);
 extractRules(rules,items);
 }
